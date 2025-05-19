@@ -5,11 +5,20 @@ class StringCalculator
 
     if nums.start_with?("//")
       delimiter_section, nums = nums.split("\n", 2)
-      custom_delimiter = delimiter_section[2] 
-      delimiters = [custom_delimiter]
+      if delimiter_section.start_with?("//[") 
+        custom_delimiters = delimiter_section.scan(/\[([^\]]+)\]/).flatten
+        delimiters = custom_delimiters
+      else
+        delimiters = [delimiter_section[2]]
+      end
     end
 
-    parts = nums.split(Regexp.union(delimiters)).map(&:to_i).sum
+  parts = nums.split(Regexp.union(delimiters)).map(&:to_i)
+
+    negatives = parts.select { |n| n < 0 }
+    raise "negatives not allowed: #{negatives.join(', ')}" if negatives.any?
+
+    parts.sum
   
     end
 
