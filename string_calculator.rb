@@ -5,7 +5,7 @@ class StringCalculator
 
     if nums.start_with?("//")
       delimiter_section, nums = nums.split("\n", 2)
-      if delimiter_section.start_with?("//[") 
+      if delimiter_section.include?("[")
         custom_delimiters = delimiter_section.scan(/\[([^\]]+)\]/).flatten
         delimiters = custom_delimiters
       else
